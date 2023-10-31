@@ -1,0 +1,5 @@
+# Feature Request
+
+## 1. Having a different NLP approach for concept mapping
+
+The Electronic Health Record (EHR) consists of medical concept labels that are used to represent various data points. These concepts are often present as a free flow text. There are several standard vocabularies established such as SNOMED, LOINIC, RxNORM, UMDNS, and NDF RT which can be accessed from online repositories such as UMLS and Athena. Linking the medical concept lebles present in the EHR to the standard vocabularies enables a consistent representation and accurate interpretation of the EHR data. At the moment, this is mainly done in a semi-automatic manner using tools such as Usagi. As part of this project, we propose a fully automatic standard vocabulary mapping using the state-of-the-art NLP techniques.
