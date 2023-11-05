@@ -1,28 +1,28 @@
 # database connection details
 db_details = {
-    "sql_host_name": 'superbugai.erc.monash.edu',
+    "sql_host_name": 'localhost',
     "sql_port_number": 5434,
     "sql_user_name": 'postgres',
     "sql_password": 'mysecretpassword',
-    "sql_db_name": 'mimic4',
+    "sql_db_name": 'omop_alfred',
 }
 
-source_schema_name = 'eicu_etl_20231106'
+source_schema_name = 'omop_migration_etl_20231021'
 
-etl_schema_name = 'eicu_etl_20231106'
+etl_schema_name = 'omop_migration_etl_20231021'
 
-lookup_schema_name = 'eicu_etl_20231106'
+lookup_schema_name = 'omop_migration_etl_20231021'
 
 vocabulary = {
-    'concept': '/superbugai-data/vocabulary_download_v5/CONCEPT.csv',
-    'vocabulary': '/superbugai-data/vocabulary_download_v5/VOCABULARY.csv',
-    'domain': '/superbugai-data/vocabulary_download_v5/DOMAIN.csv',
-    'concept_class': '/superbugai-data/vocabulary_download_v5/CONCEPT_CLASS.csv',
-    'concept_relationship': '/superbugai-data/vocabulary_download_v5/CONCEPT_RELATIONSHIP.csv',
-    'relationship': '/superbugai-data/vocabulary_download_v5/RELATIONSHIP.csv',
-    'concept_synonym': '/superbugai-data/vocabulary_download_v5/CONCEPT_SYNONYM.csv',
-    'concept_ancestor': '/superbugai-data/vocabulary_download_v5/CONCEPT_ANCESTOR.csv',
-    'tmp_custom_mapping': '/superbugai-data/vocabulary_download_v5/tmp_custom_mapping.csv',
+    'concept': '/home/ehrqcadmin/workspace/EHR-QC-Standardise/data/vocabulary_download_v5/CONCEPT.csv',
+    'vocabulary': '/home/ehrqcadmin/workspace/EHR-QC-Standardise/data/vocabulary_download_v5/VOCABULARY.csv',
+    'domain': '/home/ehrqcadmin/workspace/EHR-QC-Standardise/data/vocabulary_download_v5/DOMAIN.csv',
+    'concept_class': '/home/ehrqcadmin/workspace/EHR-QC-Standardise/data/vocabulary_download_v5/CONCEPT_CLASS.csv',
+    'concept_relationship': '/home/ehrqcadmin/workspace/EHR-QC-Standardise/data/vocabulary_download_v5/CONCEPT_RELATIONSHIP.csv',
+    'relationship': '/home/ehrqcadmin/workspace/EHR-QC-Standardise/data/vocabulary_download_v5/RELATIONSHIP.csv',
+    'concept_synonym': '/home/ehrqcadmin/workspace/EHR-QC-Standardise/data/vocabulary_download_v5/CONCEPT_SYNONYM.csv',
+    'concept_ancestor': '/home/ehrqcadmin/workspace/EHR-QC-Standardise/data/vocabulary_download_v5/CONCEPT_ANCESTOR.csv',
+    'tmp_custom_mapping': '/home/ehrqcadmin/workspace/EHR-QC-Standardise/data/vocabulary_download_v5/tmp_custom_mapping.csv',
 }
 
 patients = {
