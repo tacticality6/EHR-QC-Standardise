@@ -34,7 +34,8 @@ def createConcept(con, etlSchemaName, filePath):
     df['valid_start_date'] = pd.to_datetime(df['valid_start_date'], unit='s')
     df['valid_end_date'] = pd.to_datetime(df['valid_end_date'], unit='s')
     dfColumns = ['concept_id', 'concept_name', 'domain_id', 'vocabulary_id', 'concept_class_id', 'standard_concept', 'concept_code', 'valid_start_date', 'valid_end_date', 'invalid_reason']
-    Utils.saveDataframe(con=con, destinationSchemaName=etlSchemaName, destinationTableName='voc_concept', df=df, dfColumns=dfColumns)
+    columns = dfColumns
+    Utils.saveDataframe(con=con, destinationSchemaName=etlSchemaName, destinationTableName='voc_concept', columns=columns, df=df, dfColumns=dfColumns)
 
 
 def createVocabulary(con, etlSchemaName, filePath):
@@ -58,7 +59,8 @@ def createVocabulary(con, etlSchemaName, filePath):
 
     df = pd.read_csv(filePath, sep='\t')
     dfColumns = ['vocabulary_id', 'vocabulary_name', 'vocabulary_reference', 'vocabulary_version', 'vocabulary_concept_id']
-    Utils.saveDataframe(con=con, destinationSchemaName=etlSchemaName, destinationTableName='voc_vocabulary', df=df, dfColumns=dfColumns)
+    columns = dfColumns
+    Utils.saveDataframe(con=con, destinationSchemaName=etlSchemaName, destinationTableName='voc_vocabulary', columns=columns, df=df, dfColumns=dfColumns)
 
 
 def createDomain(con, etlSchemaName, filePath):
@@ -80,7 +82,8 @@ def createDomain(con, etlSchemaName, filePath):
 
     df = pd.read_csv(filePath, sep='\t')
     dfColumns = ['domain_id', 'domain_name', 'domain_concept_id']
-    Utils.saveDataframe(con=con, destinationSchemaName=etlSchemaName, destinationTableName='voc_domain', df=df, dfColumns=dfColumns)
+    columns = dfColumns
+    Utils.saveDataframe(con=con, destinationSchemaName=etlSchemaName, destinationTableName='voc_domain', columns=columns, df=df, dfColumns=dfColumns)
 
 
 def createConceptClass(con, etlSchemaName, filePath):
@@ -102,7 +105,8 @@ def createConceptClass(con, etlSchemaName, filePath):
 
     df = pd.read_csv(filePath, sep='\t')
     dfColumns = ['concept_class_id', 'concept_class_name', 'concept_class_concept_id']
-    Utils.saveDataframe(con=con, destinationSchemaName=etlSchemaName, destinationTableName='voc_concept_class', df=df, dfColumns=dfColumns)
+    columns = dfColumns
+    Utils.saveDataframe(con=con, destinationSchemaName=etlSchemaName, destinationTableName='voc_concept_class', columns=columns, df=df, dfColumns=dfColumns)
 
 
 def createConceptRelationship(con, etlSchemaName, filePath):
@@ -129,7 +133,8 @@ def createConceptRelationship(con, etlSchemaName, filePath):
     df['valid_start_date'] = pd.to_datetime(df['valid_start_date'], unit='s')
     df['valid_end_date'] = pd.to_datetime(df['valid_end_date'], unit='s')
     dfColumns = ['concept_id_1', 'concept_id_2', 'relationship_id', 'valid_start_date', 'valid_end_date', 'invalid_reason']
-    Utils.saveDataframe(con=con, destinationSchemaName=etlSchemaName, destinationTableName='voc_concept_relationship', df=df, dfColumns=dfColumns)
+    columns = dfColumns
+    Utils.saveDataframe(con=con, destinationSchemaName=etlSchemaName, destinationTableName='voc_concept_relationship', columns=columns, df=df, dfColumns=dfColumns)
 
 
 def createRelationship(con, etlSchemaName, filePath):
@@ -154,7 +159,8 @@ def createRelationship(con, etlSchemaName, filePath):
 
     df = pd.read_csv(filePath, sep='\t')
     dfColumns = ['relationship_id', 'relationship_name', 'is_hierarchical', 'defines_ancestry', 'reverse_relationship_id', 'relationship_concept_id']
-    Utils.saveDataframe(con=con, destinationSchemaName=etlSchemaName, destinationTableName='voc_relationship', df=df, dfColumns=dfColumns)
+    columns = dfColumns
+    Utils.saveDataframe(con=con, destinationSchemaName=etlSchemaName, destinationTableName='voc_relationship', columns=columns, df=df, dfColumns=dfColumns)
 
 
 def createConceptSynonym(con, etlSchemaName, filePath):
@@ -176,7 +182,8 @@ def createConceptSynonym(con, etlSchemaName, filePath):
 
     df = pd.read_csv(filePath, sep='\t')
     dfColumns = ['concept_id', 'concept_synonym_name', 'language_concept_id']
-    Utils.saveDataframe(con=con, destinationSchemaName=etlSchemaName, destinationTableName='voc_concept_synonym', df=df, dfColumns=dfColumns)
+    columns = dfColumns
+    Utils.saveDataframe(con=con, destinationSchemaName=etlSchemaName, destinationTableName='voc_concept_synonym', columns=columns, df=df, dfColumns=dfColumns)
 
 
 def createConceptAncestor(con, etlSchemaName, filePath):
@@ -199,7 +206,8 @@ def createConceptAncestor(con, etlSchemaName, filePath):
 
     df = pd.read_csv(filePath, sep='\t')
     dfColumns = ['ancestor_concept_id', 'descendant_concept_id', 'min_levels_of_separation', 'max_levels_of_separation']
-    Utils.saveDataframe(con=con, destinationSchemaName=etlSchemaName, destinationTableName='voc_concept_ancestor', df=df, dfColumns=dfColumns)
+    columns = dfColumns
+    Utils.saveDataframe(con=con, destinationSchemaName=etlSchemaName, destinationTableName='voc_concept_ancestor', columns=columns, df=df, dfColumns=dfColumns)
 
 
 def stageConcept(con, etlSchemaName, lookupSchemaName):
