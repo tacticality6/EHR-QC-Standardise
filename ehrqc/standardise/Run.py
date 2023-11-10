@@ -11,14 +11,14 @@ log.addHandler(ch)
 
 import argparse
 
-from ehrqc.standardize import Utils
-from ehrqc.standardize import Config
-from ehrqc.standardize import Import
-from ehrqc.standardize import Stage
-from ehrqc.standardize import Lookup
-from ehrqc.standardize.etl import Person
-from ehrqc.standardize.etl import VisitOccurrence
-from ehrqc.standardize.etl import Measurement
+from ehrqc.standardise import Utils
+from ehrqc.standardise import Config
+from ehrqc.standardise import Import
+from ehrqc.standardise import Stage
+from ehrqc.standardise import Lookup
+from ehrqc.standardise.etl import Person
+from ehrqc.standardise.etl import VisitOccurrence
+from ehrqc.standardise.etl import Measurement
 
 
 def importVocabulary(con):
@@ -48,11 +48,11 @@ def importConceptMapping(con):
 
 def performETL(con):
     log.info("Performing ETL")
-    log.info("ETL for the entity: Person")
-    Person.migrate(con=con, etlSchemaName=Config.etl_schema_name)
-    log.info("ETL for the entity: Visit Occurrence")
-    VisitOccurrence.migrate(con=con, etlSchemaName=Config.etl_schema_name)
-    # log.info("ETL for the entity: Measurements")
+    # log.info("ETL for the entity: Person")
+    # Person.migrate(con=con, etlSchemaName=Config.etl_schema_name)
+    # log.info("ETL for the entity: Visit Occurrence")
+    # VisitOccurrence.migrate(con=con, etlSchemaName=Config.etl_schema_name)
+    log.info("ETL for the entity: Measurements")
     Measurement.migrate(con=con, etlSchemaName=Config.etl_schema_name)
 
 

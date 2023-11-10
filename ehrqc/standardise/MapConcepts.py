@@ -18,7 +18,7 @@ ch = logging.StreamHandler(sys.stdout)
 ch.setFormatter(format)
 log.addHandler(ch)
 
-from ehrqc.standardize import Config
+from ehrqc.standardise import Config
 
 
 def fetchMatchingConceptFuzzy(searchPhrase, standardConcepts):
@@ -65,7 +65,7 @@ def fetchMatchingConceptFromReverseIndex(searchPhrase, ix):
         return matchingConcept
 
 
-def fetchMatchingConceptFromMajorityVoting(searchPhrase, standardConcepts, ix, cat):
+def fetchMatchingConceptFromMajorityVotingPlus(searchPhrase, standardConcepts, ix, cat):
     medcatConceptName, medcatConceptId = fetchMatchingConceptMedcatFromCat(searchPhrase=searchPhrase, cat=cat)
     fuzzyConceptName = fetchMatchingConceptFuzzy(searchPhrase=searchPhrase, standardConcepts=standardConcepts.concept_name)
     fuzzyConceptId = None
@@ -75,21 +75,26 @@ def fetchMatchingConceptFromMajorityVoting(searchPhrase, standardConcepts, ix, c
     reverseIndexConceptId = None
     if not standardConcepts[standardConcepts.concept_name == reverseIndexConceptName].concept_code.empty:
         reverseIndexConceptId = standardConcepts[standardConcepts.concept_name == reverseIndexConceptName].concept_code.values[0]
-    if (medcatConceptName == fuzzyConceptName == reverseIndexConceptName):
-        return [(searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, medcatConceptName, 'High')]
-    elif (medcatConceptName == fuzzyConceptName != reverseIndexConceptName):
-        return [(searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, medcatConceptName, 'Medium'), (searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, reverseIndexConceptName, 'Low')]
-    elif (medcatConceptName == reverseIndexConceptName != fuzzyConceptName):
-        return [(searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, medcatConceptName, 'Medium'), (searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, fuzzyConceptName, 'Low')]
-    elif (reverseIndexConceptName == fuzzyConceptName != medcatConceptName):
-        return [(searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, reverseIndexConceptName, 'Medium'), (searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, medcatConceptName, 'Low')]
-    elif (medcatConceptName != fuzzyConceptName != reverseIndexConceptName):
-        return [(searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, medcatConceptName, 'Low'), (searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, fuzzyConceptName, 'Low'), (searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, reverseIndexConceptName, 'Low')]
+    if (medcatConceptName and fuzzyConceptName and reverseIndexConceptName and (medcatConceptName == fuzzyConceptName == reverseIndexConceptName)):
+        return [(searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, medcatConceptName, medcatConceptId, 'Medcat + Fuzzy + RevIndex')]
+    elif (medcatConceptName and fuzzyConceptName and (medcatConceptName == fuzzyConceptName != reverseIndexConceptName)):
+        return [(searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, medcatConceptName, medcatConceptId, 'Medcat + Fuzzy')]
+    elif (medcatConceptName and reverseIndexConceptName and (medcatConceptName == reverseIndexConceptName != fuzzyConceptName)):
+        return [(searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, medcatConceptName, medcatConceptId, 'Medcat + RevIndex')]
+    elif (reverseIndexConceptName and fuzzyConceptName and (reverseIndexConceptName == fuzzyConceptName != medcatConceptName)):
+        return [(searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, reverseIndexConceptName, fuzzyConceptId, 'Fuzzy + RevIndex')]
+    else:
+        if medcatConceptName:
+            return [(searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, medcatConceptName, medcatConceptId, 'Medcat')]
+        if fuzzyConceptName:
+            return [(searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, fuzzyConceptName, fuzzyConceptId, 'Fuzzy')]
+        if reverseIndexConceptName:
+            return [(searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, reverseIndexConceptName, reverseIndexConceptId, 'RevIndex')]
 
 
 def generateCustomMappingsForReview(domainId, vocabularyId, conceptClassId, model_pack_path, conceptsPath, conceptNameRow, mappedConceptSavePath):
 
-    from ehrqc.standardize.Utils import getConnection
+    from ehrqc.standardise.Utils import getConnection
     import pandas as pd
 
     log.info('Getting connection')
@@ -144,7 +149,7 @@ def generateCustomMappingsForReview(domainId, vocabularyId, conceptClassId, mode
 
         log.debug('Mapping concept: ' + row[conceptNameRow])
 
-        matchingConcepts = fetchMatchingConceptFromMajorityVoting(
+        matchingConcepts = fetchMatchingConceptFromMajorityVotingPlus(
             searchPhrase=row[conceptNameRow]
             , standardConcepts=standardConceptsDf
             , ix=ix
@@ -155,8 +160,8 @@ def generateCustomMappingsForReview(domainId, vocabularyId, conceptClassId, mode
             matchingConceptList = list(matchingConcept)
             outRows.append(matchingConceptList)
 
-    matchingConceptsDf = pd.DataFrame(outRows, columns=['searchPhrase', 'medcatConceptName', 'medcatConceptId', 'fuzzyConceptName', 'fuzzyConceptId', 'reverseIndexConceptName', 'reverseIndexConceptId', 'majorityVoting', 'confidence'])
-    matchingConceptsDf.to_csv(mappedConceptSavePath)
+    matchingConceptsDf = pd.DataFrame(outRows, columns=['searchPhrase', 'medcatConceptName', 'medcatConceptId', 'fuzzyConceptName', 'fuzzyConceptId', 'reverseIndexConceptName', 'reverseIndexConceptId', 'mvpConcept', 'mvpConceptId', 'source'])
+    matchingConceptsDf.to_csv(mappedConceptSavePath, index=False)
 
 
 if __name__ == "__main__":

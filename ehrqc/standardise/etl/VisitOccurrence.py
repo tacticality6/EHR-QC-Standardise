@@ -34,8 +34,8 @@ def createVisitOccurrenceCdm(con, etlSchemaName):
         """
     insertQuery = """INSERT INTO """ + etlSchemaName + """.cdm_visit_occurrence
     SELECT
-        src.episode_id                              AS visit_occurrence_id,
-        src.patient_id                              AS person_id,
+        src.episode_id::int                         AS visit_occurrence_id,
+        replace(src.patient_id, '-', '')::int       AS person_id,
         0                                           AS visit_concept_id,
         CAST(src.admittime AS DATE)                 AS visit_start_date,
         src.admittime                               AS visit_start_datetime,
@@ -51,14 +51,14 @@ def createVisitOccurrenceCdm(con, etlSchemaName):
         0                                           AS discharge_to_concept_id,         
         src.discharge_location                      AS discharge_to_source_value,
         LAG(src.episode_id) OVER (
-            PARTITION BY patient_id, episode_id
-            ORDER BY admittime
-        )                                           AS preceding_visit_occurrence_id,
+            PARTITION BY src.patient_id, src.episode_id
+            ORDER BY src.admittime
+        )::int                                      AS preceding_visit_occurrence_id,
         CONCAT('visit.', src.admission_type)        AS unit_id,
         src.load_table_id                           AS load_table_id,
         src.load_row_id                             AS load_row_id,
         src.trace_id                                AS trace_id
-    FROM 
+    FROM
         """ + etlSchemaName + """.src_admissions src
     ;
         """

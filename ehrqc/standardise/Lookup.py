@@ -1,5 +1,5 @@
-from ehrqc.standardize import Config
-from ehrqc.standardize import Utils
+from ehrqc.standardise import Config
+from ehrqc.standardise import Utils
 
 import logging
 
@@ -359,7 +359,7 @@ def importConceptMapping(con, schemaName, filePath, fileSeparator):
     dropQuery = """drop table if exists """ + schemaName + """.concept_mapping cascade"""
     createQuery = """CREATE TABLE """ + schemaName + """.concept_mapping (
         concept_name         TEXT      not null,
-        snomed_concept_id       TEXT      not null
+        concept_id       TEXT      not null
         )
         ;
         """
@@ -370,15 +370,15 @@ def importConceptMapping(con, schemaName, filePath, fileSeparator):
 
     import pandas as pd
 
-    df = pd.read_csv(filePath, sep=fileSeparator)
+    df = pd.read_csv(filePath, sep=fileSeparator, dtype=str)
     dfColumns = []
     columns = []
     if(Config.conceptmaps['column_mapping']['concept_name']):
         dfColumns.append(Config.conceptmaps['column_mapping']['concept_name'])
         columns.append('concept_name')
-    if(Config.conceptmaps['column_mapping']['snomed_concept_id']):
-        dfColumns.append(Config.conceptmaps['column_mapping']['snomed_concept_id'])
-        columns.append('snomed_concept_id')
+    if(Config.conceptmaps['column_mapping']['concept_id']):
+        dfColumns.append(Config.conceptmaps['column_mapping']['concept_id'])
+        columns.append('concept_id')
     Utils.saveDataframe(con=con, destinationSchemaName=schemaName, destinationTableName='concept_mapping', columns=columns, df=df, dfColumns=dfColumns)
 
 

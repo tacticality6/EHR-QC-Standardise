@@ -1,6 +1,10 @@
+import os
+
 import logging
 
 log = logging.getLogger("EHR-QC")
+
+from ehrqc.standardise import Config
 
 
 def createPatientsStaging(con, sourceSchemaName, destinationSchemaName):
@@ -120,8 +124,46 @@ def createLabEventsStaging(con, sourceSchemaName, destinationSchemaName):
             cursor.execute(createQuery)
 
 
+def createStaging(con, sourceSchemaName, destinationSchemaName, tableName, sqlQueryFile):
+    log.info("Creating staging table: " + destinationSchemaName + "." + tableName)
+    dropQuery = """drop table if exists """ + destinationSchemaName + """.""" + tableName + """ cascade"""
+    mimicOmopSepsisIcdPath = os.path.join(sqlQueryFile)
+    mimicOmopSepsisIcdFile = open(mimicOmopSepsisIcdPath)
+    mimicOmopSepsisIcdQuery = mimicOmopSepsisIcdFile.read()
+    mimicOmopSepsisIcdQuery = mimicOmopSepsisIcdQuery.replace('__schema_name__', sourceSchemaName)
+    createQuery = """CREATE TABLE """ + destinationSchemaName + """.""" + tableName + """ AS """ + mimicOmopSepsisIcdQuery
+    with con:
+        with con.cursor() as cursor:
+            cursor.execute(dropQuery)
+            cursor.execute(createQuery)
+
+
 def migrate(con, sourceSchemaName, destinationSchemaName):
-    createPatientsStaging(con=con, sourceSchemaName=sourceSchemaName, destinationSchemaName=destinationSchemaName)
-    createAdmissionsStaging(con=con, sourceSchemaName=sourceSchemaName, destinationSchemaName=destinationSchemaName)
-    createChartEventsStaging(con=con, sourceSchemaName=sourceSchemaName, destinationSchemaName=destinationSchemaName)
-    createLabEventsStaging(con=con, sourceSchemaName=sourceSchemaName, destinationSchemaName=destinationSchemaName)
+    # createPatientsStaging(con=con, sourceSchemaName=sourceSchemaName, destinationSchemaName=destinationSchemaName)
+    # createAdmissionsStaging(con=con, sourceSchemaName=sourceSchemaName, destinationSchemaName=destinationSchemaName)
+    # createChartEventsStaging(con=con, sourceSchemaName=sourceSchemaName, destinationSchemaName=destinationSchemaName)
+    # createLabEventsStaging(con=con, sourceSchemaName=sourceSchemaName, destinationSchemaName=destinationSchemaName)
+    if(hasattr(Config, 'patients') and 'file_name' in Config.patients and Config.patients['staging_sql']):
+        createStaging(
+            con=con,
+            sourceSchemaName=sourceSchemaName,
+            destinationSchemaName=destinationSchemaName,
+            tableName='src_patients',
+            sqlQueryFile=Config.patients['staging_sql']
+            )
+    if(hasattr(Config, 'admissions') and 'file_name' in Config.admissions and Config.admissions['staging_sql']):
+        createStaging(
+            con=con,
+            sourceSchemaName=sourceSchemaName,
+            destinationSchemaName=destinationSchemaName,
+            tableName='src_admissions',
+            sqlQueryFile=Config.admissions['staging_sql']
+            )
+    if(hasattr(Config, 'labevents') and 'file_name' in Config.labevents and Config.labevents['staging_sql']):
+        createStaging(
+            con=con,
+            sourceSchemaName=sourceSchemaName,
+            destinationSchemaName=destinationSchemaName,
+            tableName='src_labevents',
+            sqlQueryFile=Config.labevents['staging_sql']
+            )

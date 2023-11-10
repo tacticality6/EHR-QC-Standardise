@@ -37,9 +37,9 @@ def createMeasurements(con, etlSchemaName):
         """
     insertLabeventsQuery = """INSERT INTO """ + etlSchemaName + """.cdm_measurement
         SELECT
-            src.labevent_id                                     AS measurement_id,
-            src.patient_id                                      AS person_id,
-            map.snomed_concept_id::TEXT                         AS measurement_concept_id,
+            src.labevent_id::INT                                AS measurement_id,
+            replace(src.patient_id, '-', '')::INT               AS person_id,
+            map.concept_id::TEXT                                AS measurement_concept_id,
             CAST(src.charttime AS DATE)                         AS measurement_date,
             src.charttime                                       AS measurement_datetime,
             CAST(src.charttime AS TIME)                         AS measurement_time,
@@ -51,7 +51,7 @@ def createMeasurements(con, etlSchemaName):
             src.ref_range_lower                                 AS range_low,
             src.ref_range_upper                                 AS range_high,
             CAST(NULL AS INTEGER)                               AS provider_id,
-            src.episode_id                                      AS visit_occurrence_id,
+            src.episode_id::INT                                 AS visit_occurrence_id,
             CAST(NULL AS INTEGER)                               AS visit_detail_id,
             src.itemid                                          AS measurement_source_value,
             CAST(NULL AS INTEGER)                               AS measurement_source_concept_id,
@@ -72,7 +72,7 @@ def createMeasurements(con, etlSchemaName):
         SELECT
             src.vital_id                                        AS measurement_id,
             src.patient_id                                      AS person_id,
-            map.snomed_concept_id::TEXT                         AS measurement_concept_id,
+            map.concept_id::TEXT                                AS measurement_concept_id,
             CAST(src.charttime AS DATE)                         AS measurement_date,
             src.charttime                                       AS measurement_datetime,
             CAST(src.charttime AS TIME)                         AS measurement_time,
@@ -109,8 +109,8 @@ def createMeasurements(con, etlSchemaName):
             cursor.execute(createQuery)
             log.info("Loading table: " + etlSchemaName + ".cdm_measurement - Lab Events")
             cursor.execute(insertLabeventsQuery)
-            log.info("Loading table: " + etlSchemaName + ".cdm_measurement - Chart Events")
-            cursor.execute(insertCharteventsQuery)
+            # log.info("Loading table: " + etlSchemaName + ".cdm_measurement - Chart Events")
+            # cursor.execute(insertCharteventsQuery)
 
 
 def migrate(con, etlSchemaName):
