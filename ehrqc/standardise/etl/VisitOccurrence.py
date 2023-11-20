@@ -44,7 +44,7 @@ def createVisitOccurrenceCdm(con, etlSchemaName):
         32817                                       AS visit_type_concept_id,
         CAST(NULL AS INTEGER)                       AS provider_id,
         CAST(NULL AS INTEGER)                       AS care_site_id,
-        src.admission_type                          AS visit_source_value,
+        src.hospital_expire_flag                    AS visit_source_value,
         CAST(NULL AS INTEGER)                       AS visit_source_concept_id,
         0                                           AS admitting_source_concept_id,
         src.admission_location                      AS admitting_source_value,

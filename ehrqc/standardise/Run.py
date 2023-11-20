@@ -50,10 +50,10 @@ def performETL(con):
     log.info("Performing ETL")
     # log.info("ETL for the entity: Person")
     # Person.migrate(con=con, etlSchemaName=Config.etl_schema_name)
-    # log.info("ETL for the entity: Visit Occurrence")
-    # VisitOccurrence.migrate(con=con, etlSchemaName=Config.etl_schema_name)
-    log.info("ETL for the entity: Measurements")
-    Measurement.migrate(con=con, etlSchemaName=Config.etl_schema_name)
+    log.info("ETL for the entity: Visit Occurrence")
+    VisitOccurrence.migrate(con=con, etlSchemaName=Config.etl_schema_name)
+    # log.info("ETL for the entity: Measurements")
+    # Measurement.migrate(con=con, etlSchemaName=Config.etl_schema_name)
 
 
 if __name__ == "__main__":
