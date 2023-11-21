@@ -9,11 +9,11 @@ db_details = {
     "sql_db_name": os.environ['POSTGRES_DB_NAME'],
 }
 
-source_schema_name = 'eicu_etl_20231121'
+source_schema_name = 'eicu_etl_20231106'
 
-etl_schema_name = 'eicu_etl_20231121'
+etl_schema_name = 'eicu_etl_20231106'
 
-lookup_schema_name = 'eicu_etl_20231121'
+lookup_schema_name = 'eicu_etl_20231106'
 
 vocabulary = {
     'concept': '/superbugai-data/vocabulary_download_v5/CONCEPT.csv',
@@ -27,46 +27,46 @@ vocabulary = {
     'tmp_custom_mapping': '/superbugai-data/vocabulary_download_v5/tmp_custom_mapping.csv',
 }
 
-patients = {
-    'file_name': '/home/yram0006/phd/chapter_2/workspace/EHR-QC-Demo/2023_11_aicare/data/eICU/patient.csv',
-    'file_separator': ',',
-    'column_mapping': {
-        'patient_id': 'uniquepid',
-        'age': 'age',
-        'gender': 'gender',
-        'dob': None,
-        'dod': None,
-    },
-    'overwrite': True,
-    'staging_sql': '/home/yram0006/phd/chapter_2/workspace/EHR-QC-Demo/2023_11_aicare/data/sql/stage_patients.sql'
-}
+# patients = {
+#     'file_name': os.environ['EICU_EHR_PIPELINE_BASE'] + '/data/eICU/patient.csv',
+#     'file_separator': ',',
+#     'column_mapping': {
+#         'patient_id': 'uniquepid',
+#         'age': 'age',
+#         'gender': 'gender',
+#         'dob': None,
+#         'dod': None,
+#     },
+#     'overwrite': True,
+#     'staging_sql': os.environ['EHR_QC_STANDARDISE_BASE'] + '/ehrqc/standardise/sql/stage_patients.sql'
+# }
 
-admissions = {
-    'file_name': '/home/yram0006/phd/chapter_2/workspace/EHR-QC-Demo/2023_11_aicare/data/eICU/patient.csv',
-    'file_separator': ',',
-    'column_mapping': {
-        'patient_id': 'uniquepid',
-        'episode_id': 'patientunitstayid',
-        'admittime': 'unitadmittime24',
-        'dischtime': 'unitdischargeoffset',
-        'deathtime': None,
-        'admission_type': 'unittype',
-        'admission_location': 'hospitaladmitsource',
-        'discharge_location': 'hospitaldischargelocation',
-        'insurance': None,
-        'language': None,
-        'marital_status': None,
-        'ethnicity': None,
-        'edregtime': None,
-        'edouttime': 'hospitaldischargeyear',
-        'hospital_expire_flag': 'unitdischargestatus',
-    },
-    'overwrite': True,
-    'staging_sql': '/home/yram0006/phd/chapter_2/workspace/EHR-QC-Demo/2023_11_aicare/data/sql/stage_admissions.sql'
-}
+# admissions = {
+#     'file_name': os.environ['EICU_EHR_PIPELINE_BASE'] + '/data/eICU/patient.csv',
+#     'file_separator': ',',
+#     'column_mapping': {
+#         'patient_id': 'uniquepid',
+#         'episode_id': 'patientunitstayid',
+#         'admittime': 'unitadmittime24',
+#         'dischtime': 'unitdischargeoffset',
+#         'deathtime': None,
+#         'admission_type': 'unittype',
+#         'admission_location': 'hospitaladmitsource',
+#         'discharge_location': 'hospitaldischargelocation',
+#         'insurance': None,
+#         'language': None,
+#         'marital_status': None,
+#         'ethnicity': None,
+#         'edregtime': None,
+#         'edouttime': 'hospitaldischargeyear',
+#         'hospital_expire_flag': 'unitdischargestatus',
+#     },
+#     'overwrite': True,
+#     'staging_sql': os.environ['EHR_QC_STANDARDISE_BASE'] + '/ehrqc/standardise/sql/stage_admissions.sql'
+# }
 
 # chartevents = {
-#     'file_name': os.environ['EICU_EHR_PIPELINE_BASE'] + '/data/eICU/vitalAperiodic.csv',
+#     'file_name': os.environ['EICU_EHR_PIPELINE_BASE'] + '/home/yram0006/phd/chapter_2/workspace/EHR-QC-Demo/2023_11_aicare/data/lab.csv',
 #     'file_separator': ',',
 #     'column_mapping': {
 #         'patient_id': None,
@@ -98,7 +98,7 @@ admissions = {
 # }
 
 labevents = {
-    'file_name': '/home/yram0006/phd/chapter_2/workspace/EHR-QC-Demo/2023_11_aicare/data/eICU/lab.csv',
+    'file_name': os.environ['EICU_EHR_PIPELINE_BASE'] + '/data/eICU/lab.csv',
     'file_separator': ',',
     'column_mapping': {
         'labevent_id': 'labid',
@@ -118,11 +118,11 @@ labevents = {
         'comments': None,
     },
     'overwrite': True,
-    'staging_sql': '/home/yram0006/phd/chapter_2/workspace/EHR-QC-Demo/2023_11_aicare/data/sql/stage_labevents.sql'
+    'staging_sql': os.environ['EHR_QC_STANDARDISE_BASE'] + '/ehrqc/standardise/sql/stage_labevents.sql',
 }
 
 conceptmaps = {
-    'file_name': '/home/yram0006/phd/chapter_2/workspace/EHR-QC-Demo/2023_11_aicare/data/concepts/concepts_mapped.csv',
+    'file_name': os.environ['EICU_EHR_PIPELINE_BASE'] + '/data/concept_mapping/concept_labs_mapped.csv',
     'file_separator': '\t',
     'column_mapping': {
         'concept_name': 'searchPhrase',
