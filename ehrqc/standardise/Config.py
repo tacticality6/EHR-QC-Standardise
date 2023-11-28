@@ -38,7 +38,7 @@ patients = {
         'dod': None,
     },
     'overwrite': True,
-    'staging_sql': '/home/yram0006/phd/chapter_2/workspace/EHR-QC-Demo/2023_11_aicare/data/sql/stage_patients.sql'
+    'staging_sql': '/home/yram0006/phd/chapter_2/workspace/EHR-QC-Demo/2023_11_aicare/data/sql/stage/patients.sql'
 }
 
 admissions = {
@@ -62,7 +62,7 @@ admissions = {
         'hospital_expire_flag': 'unitdischargestatus',
     },
     'overwrite': True,
-    'staging_sql': '/home/yram0006/phd/chapter_2/workspace/EHR-QC-Demo/2023_11_aicare/data/sql/stage_admissions.sql'
+    'staging_sql': '/home/yram0006/phd/chapter_2/workspace/EHR-QC-Demo/2023_11_aicare/data/sql/stage/admissions.sql'
 }
 
 # chartevents = {
@@ -118,7 +118,7 @@ labevents = {
         'comments': None,
     },
     'overwrite': True,
-    'staging_sql': '/home/yram0006/phd/chapter_2/workspace/EHR-QC-Demo/2023_11_aicare/data/sql/stage_labevents.sql'
+    'staging_sql': '/home/yram0006/phd/chapter_2/workspace/EHR-QC-Demo/2023_11_aicare/data/sql/stage/labevents.sql'
 }
 
 conceptmaps = {
