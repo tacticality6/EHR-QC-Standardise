@@ -321,6 +321,6 @@ conceptmaps = {
     'file_separator': '\t',
     'column_mapping': {
         'concept_name': 'searchPhrase',
-        'concept_id': 'snomedConceptId',
+        'snomed_concept_id': 'snomedConceptId',
     },
 }

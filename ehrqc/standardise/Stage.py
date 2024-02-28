@@ -167,3 +167,11 @@ def migrate(con, sourceSchemaName, destinationSchemaName):
             tableName='src_labevents',
             sqlQueryFile=Config.labevents['staging_sql']
             )
+    if(hasattr(Config, 'chartevents') and 'file_name' in Config.chartevents and Config.chartevents['staging_sql']):
+        createStaging(
+            con=con,
+            sourceSchemaName=sourceSchemaName,
+            destinationSchemaName=destinationSchemaName,
+            tableName='src_chartevents',
+            sqlQueryFile=Config.chartevents['staging_sql']
+            )

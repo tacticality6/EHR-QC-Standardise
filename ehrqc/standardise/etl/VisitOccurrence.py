@@ -38,13 +38,13 @@ def createVisitOccurrenceCdm(con, etlSchemaName):
         replace(src.patient_id, '-', '')::int       AS person_id,
         0                                           AS visit_concept_id,
         CAST(src.admittime AS DATE)                 AS visit_start_date,
-        src.admittime                               AS visit_start_datetime,
+        src.admittime::timestamp                    AS visit_start_datetime,
         CAST(src.dischtime AS DATE)                 AS visit_end_date,
-        src.dischtime                               AS visit_end_datetime,
+        src.dischtime::timestamp                    AS visit_end_datetime,
         32817                                       AS visit_type_concept_id,
         CAST(NULL AS INTEGER)                       AS provider_id,
         CAST(NULL AS INTEGER)                       AS care_site_id,
-        src.hospital_expire_flag                    AS visit_source_value,
+        src.admission_type                          AS visit_source_value,
         CAST(NULL AS INTEGER)                       AS visit_source_concept_id,
         0                                           AS admitting_source_concept_id,
         src.admission_location                      AS admitting_source_value,
@@ -52,7 +52,7 @@ def createVisitOccurrenceCdm(con, etlSchemaName):
         src.discharge_location                      AS discharge_to_source_value,
         LAG(src.episode_id) OVER (
             PARTITION BY src.patient_id, src.episode_id
-            ORDER BY src.admittime
+            ORDER BY src.admittime::timestamp
         )::int                                      AS preceding_visit_occurrence_id,
         CONCAT('visit.', src.admission_type)        AS unit_id,
         src.load_table_id                           AS load_table_id,

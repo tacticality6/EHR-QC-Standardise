@@ -244,6 +244,7 @@ def importLabEvents(con, sourceSchemaName, filePath, fileSeparator, overwrite=Tr
     import pandas as pd
     import numpy as np
 
+    log.info("Reading file: " + str(filePath))
     df = pd.read_csv(filePath, sep=fileSeparator)
     dfColumns = []
     columns = []
