@@ -21,8 +21,6 @@ WITH stg1 AS (
         jsonb_build_object('patient_id', adm.patient_id, 'episode_id', adm.episode_id) AS trace_id
     FROM
         __schema_name__.admissions adm
-    INNER JOIN __schema_name__.cohort coh
-    ON coh.episode_id = adm.episode_id
     ORDER BY adm.patient_id, adm.episode_id, adm.admittime ASC
 )
 SELECT
