@@ -12,6 +12,4 @@ FROM
 __schema_name__.patients pat
 INNER JOIN __schema_name__.admissions adm
 ON adm.patient_id = pat.patient_id
-INNER JOIN __schema_name__.cohort coh
-ON coh.episode_id = adm.episode_id
 ;
