@@ -27,43 +27,43 @@ vocabulary = {
     'tmp_custom_mapping': '/superbugai-data/vocabulary_download_v5/tmp_custom_mapping.csv',
 }
 
-# patients = {
-#     'file_name': os.environ['EICU_EHR_PIPELINE_BASE'] + '/data/eICU/patient.csv',
-#     'file_separator': ',',
-#     'column_mapping': {
-#         'patient_id': 'uniquepid',
-#         'age': 'age',
-#         'gender': 'gender',
-#         'dob': None,
-#         'dod': None,
-#     },
-#     'overwrite': True,
-#     'staging_sql': os.environ['EHR_QC_STANDARDISE_BASE'] + '/ehrqc/standardise/sql/stage_patients.sql'
-# }
+patients = {
+    'file_name': os.environ['EICU_EHR_PIPELINE_BASE'] + '/data/eICU/patient.csv',
+    'file_separator': ',',
+    'column_mapping': {
+        'patient_id': 'uniquepid',
+        'age': 'age',
+        'gender': 'gender',
+        'dob': None,
+        'dod': None,
+    },
+    'overwrite': True,
+    'staging_sql': os.environ['EHR_QC_STANDARDISE_BASE'] + '/ehrqc/standardise/sql/stage_patients.sql'
+}
 
-# admissions = {
-#     'file_name': os.environ['EICU_EHR_PIPELINE_BASE'] + '/data/eICU/patient.csv',
-#     'file_separator': ',',
-#     'column_mapping': {
-#         'patient_id': 'uniquepid',
-#         'episode_id': 'patientunitstayid',
-#         'admittime': 'unitadmittime24',
-#         'dischtime': 'unitdischargeoffset',
-#         'deathtime': None,
-#         'admission_type': 'unittype',
-#         'admission_location': 'hospitaladmitsource',
-#         'discharge_location': 'hospitaldischargelocation',
-#         'insurance': None,
-#         'language': None,
-#         'marital_status': None,
-#         'ethnicity': None,
-#         'edregtime': None,
-#         'edouttime': 'hospitaldischargeyear',
-#         'hospital_expire_flag': 'unitdischargestatus',
-#     },
-#     'overwrite': True,
-#     'staging_sql': os.environ['EHR_QC_STANDARDISE_BASE'] + '/ehrqc/standardise/sql/stage_admissions.sql'
-# }
+admissions = {
+    'file_name': os.environ['EICU_EHR_PIPELINE_BASE'] + '/data/eICU/patient.csv',
+    'file_separator': ',',
+    'column_mapping': {
+        'patient_id': 'uniquepid',
+        'episode_id': 'patientunitstayid',
+        'admittime': 'unitadmittime24',
+        'dischtime': 'unitdischargeoffset',
+        'deathtime': None,
+        'admission_type': 'unittype',
+        'admission_location': 'hospitaladmitsource',
+        'discharge_location': 'hospitaldischargelocation',
+        'insurance': None,
+        'language': None,
+        'marital_status': None,
+        'ethnicity': None,
+        'edregtime': None,
+        'edouttime': 'hospitaldischargeyear',
+        'hospital_expire_flag': 'unitdischargestatus',
+    },
+    'overwrite': True,
+    'staging_sql': os.environ['EHR_QC_STANDARDISE_BASE'] + '/ehrqc/standardise/sql/stage_admissions.sql'
+}
 
 # chartevents = {
 #     'file_name': os.environ['EICU_EHR_PIPELINE_BASE'] + '/home/yram0006/phd/chapter_2/workspace/EHR-QC-Demo/2023_11_aicare/data/lab.csv',
