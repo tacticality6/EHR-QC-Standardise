@@ -20,8 +20,6 @@ SELECT
     jsonb_build_object('patient_id', le.patient_id, 'episode_id', le.episode_id, 'labevent_id', le.labevent_id, 'charttime', le.charttime)                                 AS trace_id
 FROM
     __schema_name__.labevents le
-INNER JOIN __schema_name__.cohort coh
-ON coh.episode_id = le.episode_id
 INNER JOIN __schema_name__.src_admissions adm
 ON adm.episode_id = le.episode_id
 ORDER BY le.patient_id, le.episode_id, le.labevent_id, le.charttime DESC
