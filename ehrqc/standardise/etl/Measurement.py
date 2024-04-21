@@ -3,7 +3,7 @@ import logging
 log = logging.getLogger("EHR-QC")
 
 
-def createMeasurements(con, etlSchemaName):
+def createMeasurements(con, etlSchemaName, Config):
     log.info("Creating table: " + etlSchemaName + ".cdm_measurement")
     dropQuery = """drop table if exists """ + etlSchemaName + """.cdm_measurement cascade"""
     createQuery = """CREATE TABLE """ + etlSchemaName + """.cdm_measurement
@@ -31,7 +31,7 @@ def createMeasurements(con, etlSchemaName):
             unit_id                       TEXT,
             load_table_id                 TEXT,
             load_row_id                   INTEGER,
-            trace_id                      TEXT  
+            trace_id                      TEXT
         )
         ;
         """
@@ -61,7 +61,7 @@ def createMeasurements(con, etlSchemaName):
             src.load_table_id                                   AS load_table_id,
             src.load_row_id                                     AS load_row_id,
             src.trace_id                                        AS trace_id
-        FROM  
+        FROM
             """ + etlSchemaName + """.src_labevents src
         INNER JOIN """ + etlSchemaName + """.concept_mapping map
         ON map.concept_name = src.itemid
@@ -94,7 +94,7 @@ def createMeasurements(con, etlSchemaName):
             src.load_table_id                                   AS load_table_id,
             src.load_row_id                                     AS load_row_id,
             src.trace_id                                        AS trace_id
-        FROM  
+        FROM
             """ + etlSchemaName + """.src_chartevents src
         INNER JOIN """ + etlSchemaName + """.concept_mapping map
         ON map.concept_name = src.itemid
@@ -107,11 +107,13 @@ def createMeasurements(con, etlSchemaName):
             cursor.execute(dropQuery)
             log.info("Creating table: " + etlSchemaName + ".cdm_measurement")
             cursor.execute(createQuery)
-            log.info("Loading table: " + etlSchemaName + ".cdm_measurement - Lab Events")
-            cursor.execute(insertLabeventsQuery)
-            log.info("Loading table: " + etlSchemaName + ".cdm_measurement - Chart Events")
-            cursor.execute(insertCharteventsQuery)
+            if(hasattr(Config, 'labevents') and 'file_name' in Config.labevents and Config.labevents['file_name']):
+                log.info("Loading table: " + etlSchemaName + ".cdm_measurement - Lab Events")
+                cursor.execute(insertLabeventsQuery)
+            if(hasattr(Config, 'chartevents') and 'file_name' in Config.chartevents and Config.chartevents['file_name']):
+                log.info("Loading table: " + etlSchemaName + ".cdm_measurement - Chart Events")
+                cursor.execute(insertCharteventsQuery)
 
 
-def migrate(con, etlSchemaName):
-    createMeasurements(con = con, etlSchemaName = etlSchemaName)
+def migrate(con, etlSchemaName, Config):
+    createMeasurements(con = con, etlSchemaName = etlSchemaName, Config = Config)

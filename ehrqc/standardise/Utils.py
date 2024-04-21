@@ -1,21 +1,28 @@
 import psycopg2
 
-from ehrqc.standardise import Config
-
 import logging
 
 log = logging.getLogger("EHR-QC")
 
+# TODO
+# Get DB values from env or something more
+import os
+# os.environ["POSTGRES_HOSTNAME"] = "localhost"
+os.environ["POSTGRES_HOSTNAME"] = "host.docker.internal"
+os.environ["POSTGRES_PORT_NUMBER"] = "5555"
+os.environ["POSTGRES_USER_NAME"] = "postgres"
+os.environ["POSTGRES_PASSWORD"] = "mysecretpassword"
+os.environ["POSTGRES_DB_NAME"] = "ehrqc-standardise"
 
-def getConnection():
+def getConnection(Config):
 
     con = psycopg2.connect(
-        dbname=Config.db_details["sql_db_name"],
-        user=Config.db_details["sql_user_name"],
-        host=Config.db_details["sql_host_name"],
-        port=Config.db_details["sql_port_number"],
-        password=Config.db_details["sql_password"]
-        )
+        dbname=os.environ.get("POSTGRES_DB_NAME"),
+        user=os.environ.get("POSTGRES_USER_NAME"),
+        host=os.environ.get("POSTGRES_HOSTNAME"),
+        port=os.environ.get("POSTGRES_PORT_NUMBER"),
+        password=os.environ.get("POSTGRES_PASSWORD"),
+    )
 
     return con
 

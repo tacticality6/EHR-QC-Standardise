@@ -1,4 +1,3 @@
-from ehrqc.standardise import Config
 from ehrqc.standardise import Utils
 
 import logging
@@ -6,8 +5,7 @@ import logging
 log = logging.getLogger("EHR-QC")
 
 
-def importPatients(con, sourceSchemaName, filePath, fileSeparator, overwrite=True):
-
+def importPatients(con, sourceSchemaName, filePath, fileSeparator, Config, overwrite=True ):
     if overwrite:
         log.info("Creating table: " + sourceSchemaName + ".patients")
 
@@ -54,7 +52,7 @@ def importPatients(con, sourceSchemaName, filePath, fileSeparator, overwrite=Tru
     Utils.saveDataframe(con=con, destinationSchemaName=sourceSchemaName, destinationTableName='patients', columns=columns, df=df, dfColumns=dfColumns)
 
 
-def importAdmissions(con, sourceSchemaName, filePath, fileSeparator, overwrite=True):
+def importAdmissions(con, sourceSchemaName, filePath, fileSeparator, Config, overwrite=True):
 
     if overwrite:
         log.info("Creating table: " + sourceSchemaName + ".admissions")
@@ -142,7 +140,7 @@ def importAdmissions(con, sourceSchemaName, filePath, fileSeparator, overwrite=T
     Utils.saveDataframe(con=con, destinationSchemaName=sourceSchemaName, destinationTableName='admissions', columns=columns, df=df, dfColumns=dfColumns)
 
 
-def importChartEvents(con, sourceSchemaName, filePath, fileSeparator, overwrite=True):
+def importChartEvents(con, sourceSchemaName, filePath, fileSeparator, Config, overwrite=True):
 
     if overwrite:
         log.info("Creating table: " + sourceSchemaName + ".chartevents")
@@ -211,7 +209,7 @@ def importChartEvents(con, sourceSchemaName, filePath, fileSeparator, overwrite=
     Utils.saveDataframe(con=con, destinationSchemaName=sourceSchemaName, destinationTableName='chartevents', columns=columns, df=df, dfColumns=dfColumns)
 
 
-def importLabEvents(con, sourceSchemaName, filePath, fileSeparator, overwrite=True):
+def importLabEvents(con, sourceSchemaName, filePath, fileSeparator, Config, overwrite=True):
 
     if overwrite:
         log.info("Creating table: " + sourceSchemaName + ".labevents")
@@ -299,7 +297,7 @@ def importLabEvents(con, sourceSchemaName, filePath, fileSeparator, overwrite=Tr
     Utils.saveDataframe(con=con, destinationSchemaName=sourceSchemaName, destinationTableName='labevents', columns=columns, df=df, dfColumns=dfColumns)
 
 
-def importDiagnosis(con, sourceSchemaName, filePath, fileSeparator, overwrite=True):
+def importDiagnosis(con, sourceSchemaName, filePath, fileSeparator, Config, overwrite=True):
 
     log.info("Creating table: " + sourceSchemaName + ".diagnosis")
 
@@ -350,45 +348,50 @@ def importDiagnosis(con, sourceSchemaName, filePath, fileSeparator, overwrite=Tr
     Utils.saveDataframe(con=con, destinationSchemaName=sourceSchemaName, destinationTableName='diagnosis', columns=columns, df=df, dfColumns=dfColumns)
 
 
-def importDataCsv(con, sourceSchemaName):
+def importDataCsv(con, Config):
 
     if(hasattr(Config, 'patients') and 'file_name' in Config.patients and Config.patients['file_name']):
         importPatients(
             con=con,
-            sourceSchemaName=sourceSchemaName,
+            sourceSchemaName=Config.source_schema_name,
             filePath = Config.patients['file_name'],
             fileSeparator=Config.patients['file_separator'],
+            Config=Config,
             overwrite=Config.patients['overwrite'],
             )
-    if(hasattr(Config, 'admissions') and 'file_name' in Config.admissions and Config.admissions['file_name']):
+     if(hasattr(Config, 'admissions') and 'file_name' in Config.admissions and Config.admissions['file_name']):
         importAdmissions(
             con=con,
-            sourceSchemaName=sourceSchemaName,
+            sourceSchemaName=Config.source_schema_name,
             filePath = Config.admissions['file_name'],
             fileSeparator=Config.admissions['file_separator'],
+            Config=Config,
             overwrite=Config.admissions['overwrite'],
             )
     if(hasattr(Config, 'chartevents') and 'file_name' in Config.chartevents and Config.chartevents['file_name']):
         importChartEvents(
             con=con,
-            sourceSchemaName=sourceSchemaName,
+            sourceSchemaName=Config.source_schema_name,
             filePath = Config.chartevents['file_name'],
             fileSeparator=Config.chartevents['file_separator'],
+            Config=Config,
             overwrite=Config.chartevents['overwrite'],
             )
     if(hasattr(Config, 'labevents') and 'file_name' in Config.labevents and Config.labevents['file_name']):
         importLabEvents(
             con=con,
-            sourceSchemaName=sourceSchemaName,
+            sourceSchemaName=Config.source_schema_name,
             filePath = Config.labevents['file_name'],
             fileSeparator=Config.labevents['file_separator'],
+            Config=Config,
             overwrite=Config.labevents['overwrite'],
             )
     if(hasattr(Config, 'diagnosis') and 'file_name' in Config.diagnosis and Config.diagnosis['file_name']):
         importDiagnosis(
             con=con,
-            sourceSchemaName=sourceSchemaName,
+            sourceSchemaName=Config.source_schema_name,
             filePath = Config.diagnosis['file_name'],
             fileSeparator=Config.diagnosis['file_separator'],
+            Config=Config,
             overwrite=Config.diagnosis['overwrite'],
             )
