@@ -3,7 +3,7 @@ import logging
 log = logging.getLogger("EHR-QC")
 
 
-def createVisitOccurrenceCdm(con, etlSchemaName):
+def createVisitOccurrenceCdm(con, etlSchemaName, Config):
     log.info("Creating table: " + etlSchemaName + ".cdm_visit_occurrence")
     dropQuery = """drop table if exists """ + etlSchemaName + """.cdm_visit_occurrence cascade"""
     createQuery = """CREATE TABLE """ + etlSchemaName + """.cdm_visit_occurrence
@@ -48,7 +48,7 @@ def createVisitOccurrenceCdm(con, etlSchemaName):
         CAST(NULL AS INTEGER)                       AS visit_source_concept_id,
         0                                           AS admitting_source_concept_id,
         src.admission_location                      AS admitting_source_value,
-        0                                           AS discharge_to_concept_id,         
+        0                                           AS discharge_to_concept_id,
         src.discharge_location                      AS discharge_to_source_value,
         LAG(src.episode_id) OVER (
             PARTITION BY src.patient_id, src.episode_id
@@ -72,5 +72,5 @@ def createVisitOccurrenceCdm(con, etlSchemaName):
             cursor.execute(insertQuery)
 
 
-def migrate(con, etlSchemaName):
-    createVisitOccurrenceCdm(con = con, etlSchemaName = etlSchemaName)
+def migrate(con, etlSchemaName, Config):
+    createVisitOccurrenceCdm(con = con, etlSchemaName = etlSchemaName, Config = Config)

@@ -1,4 +1,3 @@
-from ehrqc.standardise import Config
 from ehrqc.standardise import Utils
 
 import logging
@@ -354,7 +353,7 @@ def stageRelationship(con, etlSchemaName, lookupSchemaName):
             cursor.execute(createQuery)
 
 
-def importConceptMapping(con, schemaName, filePath, fileSeparator):
+def importConceptMapping(con, schemaName, filePath, fileSeparator, Config):
     log.info("Creating table: " + schemaName + ".concept_mapping")
     dropQuery = """drop table if exists """ + schemaName + """.concept_mapping cascade"""
     createQuery = """CREATE TABLE """ + schemaName + """.concept_mapping (
@@ -382,7 +381,7 @@ def importConceptMapping(con, schemaName, filePath, fileSeparator):
     Utils.saveDataframe(con=con, destinationSchemaName=schemaName, destinationTableName='concept_mapping', columns=columns, df=df, dfColumns=dfColumns)
 
 
-def importAthenaVocabulary(con):
+def importAthenaVocabulary(con, Config):
     Utils.createSchema(con=con, schemaName=Config.etl_schema_name)
     if(Config.vocabulary['concept']):
         createConcept(con=con, etlSchemaName=Config.etl_schema_name, filePath = Config.vocabulary['concept'])
@@ -402,7 +401,7 @@ def importAthenaVocabulary(con):
         createConceptAncestor(con=con, etlSchemaName=Config.etl_schema_name, filePath = Config.vocabulary['concept_ancestor'])
 
 
-def stageAthenaVocabulary(con):
+def stageAthenaVocabulary(con, Config):
     Utils.createSchema(con=con, schemaName=Config.lookup_schema_name)
     stageConcept(con=con, etlSchemaName=Config.etl_schema_name, lookupSchemaName=Config.lookup_schema_name)
     stageConceptRelationship(con=con, etlSchemaName=Config.etl_schema_name, lookupSchemaName=Config.lookup_schema_name)
@@ -414,9 +413,9 @@ def stageAthenaVocabulary(con):
     stageRelationship(con=con, etlSchemaName=Config.etl_schema_name, lookupSchemaName=Config.lookup_schema_name)
 
 
-def migrateStandardVocabulary(con):
-    importAthenaVocabulary(con=con)
-    stageAthenaVocabulary(con=con)
+def migrateStandardVocabulary(con, Config):
+    importAthenaVocabulary(con=con, Config=Config)
+    stageAthenaVocabulary(con=con, Config=Config)
 
 
 # if __name__ == "__main__":

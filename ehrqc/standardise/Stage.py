@@ -4,9 +4,6 @@ import logging
 
 log = logging.getLogger("EHR-QC")
 
-from ehrqc.standardise import Config
-
-
 def createPatientsStaging(con, sourceSchemaName, destinationSchemaName):
     log.info("Creating staging table: " + destinationSchemaName + ".src_patients")
     dropQuery = """drop table if exists """ + destinationSchemaName + """.src_patients cascade"""
@@ -138,7 +135,7 @@ def createStaging(con, sourceSchemaName, destinationSchemaName, tableName, sqlQu
             cursor.execute(createQuery)
 
 
-def migrate(con, sourceSchemaName, destinationSchemaName):
+def migrate(con, sourceSchemaName, destinationSchemaName, Config):
     # createPatientsStaging(con=con, sourceSchemaName=sourceSchemaName, destinationSchemaName=destinationSchemaName)
     # createAdmissionsStaging(con=con, sourceSchemaName=sourceSchemaName, destinationSchemaName=destinationSchemaName)
     # createChartEventsStaging(con=con, sourceSchemaName=sourceSchemaName, destinationSchemaName=destinationSchemaName)
