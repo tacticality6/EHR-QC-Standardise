@@ -359,7 +359,7 @@ def importDataCsv(con, Config):
             Config=Config,
             overwrite=Config.patients['overwrite'],
             )
-     if(hasattr(Config, 'admissions') and 'file_name' in Config.admissions and Config.admissions['file_name']):
+    if(hasattr(Config, 'admissions') and 'file_name' in Config.admissions and Config.admissions['file_name']):
         importAdmissions(
             con=con,
             sourceSchemaName=Config.source_schema_name,
