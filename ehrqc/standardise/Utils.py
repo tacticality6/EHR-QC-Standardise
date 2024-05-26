@@ -7,12 +7,14 @@ log = logging.getLogger("EHR-QC")
 # TODO
 # Get DB values from env or something more
 import os
+
 # os.environ["POSTGRES_HOSTNAME"] = "localhost"
 os.environ["POSTGRES_HOSTNAME"] = "host.docker.internal"
-os.environ["POSTGRES_PORT_NUMBER"] = "5555"
+os.environ["POSTGRES_PORT_NUMBER"] = "5432"
 os.environ["POSTGRES_USER_NAME"] = "postgres"
-os.environ["POSTGRES_PASSWORD"] = "mysecretpassword"
-os.environ["POSTGRES_DB_NAME"] = "ehrqc-standardise"
+os.environ["POSTGRES_PASSWORD"] = "mypassword"
+os.environ["POSTGRES_DB_NAME"] = "postgres"
+
 
 def getConnection(Config):
 
@@ -27,7 +29,9 @@ def getConnection(Config):
     return con
 
 
-def saveDataframe(con, destinationSchemaName, destinationTableName, columns, df, dfColumns):
+def saveDataframe(
+    con, destinationSchemaName, destinationTableName, columns, df, dfColumns
+):
 
     import numpy as np
     import psycopg2.extras
@@ -35,10 +39,12 @@ def saveDataframe(con, destinationSchemaName, destinationTableName, columns, df,
 
     psycopg2.extensions.register_adapter(np.int64, psycopg2._psycopg.AsIs)
 
-    log.info("Importing data to table: " + destinationSchemaName + '.' + destinationTableName)
+    log.info(
+        "Importing data to table: " + destinationSchemaName + "." + destinationTableName
+    )
 
     if len(df) > 0:
-        table = destinationSchemaName + '.' + destinationTableName
+        table = destinationSchemaName + "." + destinationTableName
         values = "VALUES({})".format(",".join(["%s" for _ in dfColumns]))
         columnsString = '"' + '", "'.join(columns) + '"'
         insert_stmt = "INSERT INTO {} ({}) {}".format(table, columnsString, values)
