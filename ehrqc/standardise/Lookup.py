@@ -293,6 +293,7 @@ def createConceptRelationship(con, etlSchemaName, filePath):
             df=chunk,
             dfColumns=chunkColumns,
         )
+
     # df = pd.read_csv(filePath, sep="\t")
     # df["valid_start_date"] = pd.to_datetime(df["valid_start_date"], unit="s")
     # df["valid_end_date"] = pd.to_datetime(df["valid_end_date"], unit="s")
@@ -456,7 +457,12 @@ def createConceptAncestor(con, etlSchemaName, filePath):
 
     chunk_size = 100000
     for chunk in pd.read_csv(filePath, sep="\t", chunksize=chunk_size):
-        chunkColumns = ["ancestor_concept_id", "descendant_concept_id"]
+        chunkColumns = [
+            "ancestor_concept_id",
+            "descendant_concept_id",
+            "min_levels_of_separation",
+            "max_levels_of_separation",
+        ]
         columns = chunkColumns
         Utils.saveDataframe(
             con=con,
