@@ -9,7 +9,7 @@ log = logging.getLogger("EHR-QC")
 import os
 
 # os.environ["POSTGRES_HOSTNAME"] = "localhost"
-os.environ["POSTGRES_HOSTNAME"] = "host.docker.internal"
+os.environ["POSTGRES_HOSTNAME"] = "db"
 os.environ["POSTGRES_PORT_NUMBER"] = "5432"
 os.environ["POSTGRES_USER_NAME"] = "postgres"
 os.environ["POSTGRES_PASSWORD"] = "mypassword"
