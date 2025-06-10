@@ -92,19 +92,27 @@ def fetchMatchingConceptFromMajorityVotingPlus(searchPhrase, standardConcepts, i
             return [(searchPhrase, medcatConceptName, medcatConceptId, fuzzyConceptName, fuzzyConceptId, reverseIndexConceptName, reverseIndexConceptId, reverseIndexConceptName, reverseIndexConceptId, 'RevIndex')]
 
 
-def generateCustomMappingsForReview(domainId, vocabularyId, conceptClassId, model_pack_path, conceptsPath, conceptNameRow, mappedConceptSavePath):
+def generateCustomMappingsForReview(domainId, vocabularyId, conceptClassId, model_pack_path, conceptsPath, conceptNameRow, mappedConceptSavePath, con=None, config=None, task=None):
 
     from ehrqc.standardise.Utils import getConnection
     import pandas as pd
 
     log.info('Getting connection')
 
-    con = getConnection()
+    if con == None:
+        con = getConnection()
+    
+    lookup_schema_name = ""
+    if config == None:
+        lookup_schema_name = Config.lookup_schema_name
+    else:
+        lookup_schema_name = config.lookup_schema_name
+
     standardConceptsQuery = """
     select
     *
     from
-    """ + Config.lookup_schema_name + """.concept
+    """ + lookup_schema_name + """.concept
     where
     domain_id = '""" + domainId + """'
     and vocabulary_id = '""" + vocabularyId + """'
@@ -159,6 +167,10 @@ def generateCustomMappingsForReview(domainId, vocabularyId, conceptClassId, mode
         for matchingConcept in matchingConcepts:
             matchingConceptList = list(matchingConcept)
             outRows.append(matchingConceptList)
+        
+        if task:
+            task.update_state(state='PROCESSING',
+                meta={'current':i,'total':conceptsDf.shape[0]})
 
     matchingConceptsDf = pd.DataFrame(outRows, columns=['searchPhrase', 'medcatConceptName', 'medcatConceptId', 'fuzzyConceptName', 'fuzzyConceptId', 'reverseIndexConceptName', 'reverseIndexConceptId', 'mvpConcept', 'mvpConceptId', 'source'])
     matchingConceptsDf.to_csv(mappedConceptSavePath, index=False)
